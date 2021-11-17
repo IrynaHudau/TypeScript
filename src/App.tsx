@@ -1,24 +1,29 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import Todos from './components/Todos';
+import TodoModel from './models/Todo';
+import NewTodo from './components/NewTodo';
+import { useState } from 'react';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+  //const listTodos = [new TodoModel("Buy Milk"), new TodoModel("Fix Window")];
+  const [listTodos, setTodo] = useState<TodoModel[]>([]);
+
+  const addTodoHandler = (todoText:string) => {
+    const newTodo = new TodoModel(todoText);
+    setTodo((prevState) => {
+      return prevState.concat(newTodo);
+    });
+  };
+
+  const removeTodoHandler = (todoId:string) => {
+    setTodo((prevState) => {
+      return prevState.filter(todo => todo.id !== todoId);
+    });
+  };
+
+  return ( 
+    <div>
+       <NewTodo onAddNewTodo={addTodoHandler}/>
+       <Todos items={listTodos} onDeleteTodo={removeTodoHandler}/>
     </div>
   );
 }
